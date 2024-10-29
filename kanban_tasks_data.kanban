@@ -1,0 +1,64 @@
+{
+	"categories": [
+		{
+			"uuid": "17717920-ffd8-4e11-8dd4-3a1120f3da30",
+			"title": "Pendente",
+			"color": "70bafa"
+		},
+		{
+			"uuid": "4292ff3a-efc5-4799-844e-0246f51e6ddf",
+			"title": "Resolvido",
+			"color": "d4e52d"
+		}
+	],
+	"stages": [
+		{
+			"uuid": "747e20ff-9bb2-4167-a3b3-1eb5919811bf",
+			"title": "Pacman",
+			"tasks": [
+				"7a01596a-5ccd-455c-9669-3169f6aa5ba3"
+			]
+		},
+		{
+			"uuid": "ab4b4148-68dd-4a9e-94b5-b7d43df36294",
+			"title": "Fantasmas",
+			"tasks": [
+				"8a2428bb-5ee1-41b4-91d4-7eef2d225202"
+			]
+		},
+		{
+			"uuid": "389d189f-23ca-4780-a4ef-bb77680c5792",
+			"title": "Bugs",
+			"tasks": []
+		}
+	],
+	"tasks": [
+		{
+			"uuid": "7a01596a-5ccd-455c-9669-3169f6aa5ba3",
+			"title": "Verificar parede",
+			"description": "- Fazer o Pacman verificar o que não é parede para poder se deslocar (isto porque ele buga quandose encontra com um fantasma)",
+			"category": "17717920-ffd8-4e11-8dd4-3a1120f3da30",
+			"steps": []
+		},
+		{
+			"uuid": "8a2428bb-5ee1-41b4-91d4-7eef2d225202",
+			"title": "Não pode voltar para trás",
+			"description": "- O fantasma não pode voltar para trás, somente se bater de frente com uma parede (pode verificaar o pr´ximo tile que nem o pacman).",
+			"category": "17717920-ffd8-4e11-8dd4-3a1120f3da30",
+			"steps": []
+		}
+	],
+	"layout": {
+		"columns": [
+			[
+				"747e20ff-9bb2-4167-a3b3-1eb5919811bf"
+			],
+			[
+				"ab4b4148-68dd-4a9e-94b5-b7d43df36294"
+			],
+			[
+				"389d189f-23ca-4780-a4ef-bb77680c5792"
+			]
+		]
+	}
+}

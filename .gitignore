@@ -1,0 +1,7 @@
+.import/
+.godot/
+.tmp/
+export.cfg
+*.tres
+*.tscn
+*.godot
