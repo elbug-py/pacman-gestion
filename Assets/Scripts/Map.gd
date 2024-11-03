@@ -2,6 +2,7 @@ extends TileMap
 signal area_eat(tile_eat: bool)
 
 @export var initial_lives: int = 3
+@export var score: int = 0
 var lives: int
 
 @export_node_path("Area2D") var player_path
@@ -12,12 +13,16 @@ var lives: int
 @onready var pinky = get_node(enemy2_path) as Area2D
 @export_node_path("TileMap") var walls_path
 @onready var walls = get_node(walls_path) as TileMap
-
+@export_node_path("Label") var lives_label_path
+@export_node_path("Label") var score_label_path
+@onready var lives_label = get_node(lives_label_path) as Label
+@onready var score_label = get_node(score_label_path) as Label
 
 func _ready():
 	print(player_path)
 	lives = initial_lives
-	print("Initial Lives 3")
+	score = 0
+	update_labels()
 
 func reset_positions():
 	pacman.position = walls.get_initialize_position()
@@ -26,6 +31,7 @@ func reset_positions():
 
 func lose_life():
 	lives -= 1
+	update_labels()
 	print("Remaining lives: ", lives)
 	if lives > 0:
 		blinky.pause_movement()
@@ -51,7 +57,7 @@ func is_tile_vacant(position_pacman: Vector2i, direction: Vector2i):
 	var next_tile_position: Vector2 = Vector2.LEFT
 	var current_tile = local_to_map(position_pacman)
 	var next_tile = get_cell_atlas_coords(0, current_tile + direction)
-	if next_tile in eat_tiles(): #!get_cell_tile_data(0, next_tile).get_custom_data("wall"):
+	if next_tile in eat_tiles():
 		next_tile_position = map_to_local(current_tile + direction)
 		area_eat.emit(true)
 	elif next_tile in big_dot_tiles():
@@ -60,6 +66,7 @@ func is_tile_vacant(position_pacman: Vector2i, direction: Vector2i):
 	else:
 		area_eat.emit(false)
 		next_tile_position = relocate(position_pacman)
+	
 	return next_tile_position
 
 func relocate(position_pacman: Vector2):
@@ -72,10 +79,15 @@ func big_dot_tiles() -> Array:
 func eat(position_pacman: Vector2):
 	var current_tile = local_to_map(position_pacman)
 	var tile = get_cell_atlas_coords(0, current_tile)
+	if tile == Vector2i(12, 2):
+		return
 	if tile in eat_tiles():
 		set_cell(0, current_tile, 0, Vector2i(12, 2))
+		score += 100
 	elif tile in big_dot_tiles():
 		set_cell(0, current_tile, 0, Vector2i(12, 2))
+		score += 1000
+	update_labels()
 
 func _process(delta: float) -> void:
 	var count = 0
@@ -93,3 +105,7 @@ func eat_tiles() -> Array:
 func get_path_to_player():
 	var path = NavigationServer2D.map_get_path(get_world_2d().navigation_map, blinky.position, pacman.position, false)
 	return path
+
+func update_labels():
+	lives_label.text = "Lives: " + str(lives)
+	score_label.text = "Score: " + str(score)
