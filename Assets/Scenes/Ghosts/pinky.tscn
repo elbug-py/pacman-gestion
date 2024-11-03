@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://b038k563nqavk"]
+
+[ext_resource type="Script" path="res://Assets/Scripts/Ghosts/blinky.gd" id="1_bcech"]
+[ext_resource type="Texture2D" uid="uid://c3tv2wapbbawc" path="res://Assets/Sprites/Arcade - Pac-Man - General Sprites.png" id="2_gud7c"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1gtpv"]
+size = Vector2(12, 12)
+
+[node name="Pinky" type="Area2D"]
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("1_bcech")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("2_gud7c")
+region_enabled = true
+region_rect = Rect2(252, 40, 8, 8)
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_1gtpv")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

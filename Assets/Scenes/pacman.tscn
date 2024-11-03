@@ -1,0 +1,145 @@
+[gd_scene load_steps=22 format=3 uid="uid://cyn8hmw4lobnc"]
+
+[ext_resource type="Texture2D" uid="uid://bwnyxg2owx5pg" path="res://Assets/Sprites/pac01.png" id="1_4qt3b"]
+[ext_resource type="Script" path="res://Assets/Scripts/pacman.gd" id="1_l2wa1"]
+[ext_resource type="Texture2D" uid="uid://c3tv2wapbbawc" path="res://Assets/Sprites/Arcade - Pac-Man - General Sprites.png" id="2_ihkxe"]
+[ext_resource type="Texture2D" uid="uid://bq1otccefnq3s" path="res://Assets/Sprites/pac02.png" id="2_s13vu"]
+[ext_resource type="Texture2D" uid="uid://dqh6vv7cjttoc" path="res://Assets/Sprites/pac03.png" id="3_4ga5x"]
+[ext_resource type="Texture2D" uid="uid://cnq5lqqa2t865" path="res://Assets/Sprites/pac04.png" id="4_k4rlr"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_in0uh"]
+atlas = ExtResource("2_ihkxe")
+region = Rect2(244, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jxhjn"]
+atlas = ExtResource("2_ihkxe")
+region = Rect2(252, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vhyni"]
+atlas = ExtResource("2_ihkxe")
+region = Rect2(260, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fgkek"]
+atlas = ExtResource("2_ihkxe")
+region = Rect2(268, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hj8pu"]
+atlas = ExtResource("2_ihkxe")
+region = Rect2(276, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bojmf"]
+atlas = ExtResource("2_ihkxe")
+region = Rect2(284, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4y30u"]
+atlas = ExtResource("2_ihkxe")
+region = Rect2(292, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tdd5b"]
+atlas = ExtResource("2_ihkxe")
+region = Rect2(300, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e7aia"]
+atlas = ExtResource("2_ihkxe")
+region = Rect2(308, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3opjj"]
+atlas = ExtResource("2_ihkxe")
+region = Rect2(316, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fvu6x"]
+atlas = ExtResource("2_ihkxe")
+region = Rect2(324, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ebhkq"]
+atlas = ExtResource("2_ihkxe")
+region = Rect2(332, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dfn4w"]
+atlas = ExtResource("2_ihkxe")
+region = Rect2(332, 8, 8, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tx7og"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_in0uh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jxhjn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vhyni")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fgkek")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hj8pu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bojmf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4y30u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tdd5b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e7aia")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3opjj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fvu6x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ebhkq")
+}, {
+"duration": 4.0,
+"texture": SubResource("AtlasTexture_dfn4w")
+}],
+"loop": false,
+"name": &"death",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_k4rlr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_4qt3b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_s13vu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_4ga5x")
+}],
+"loop": true,
+"name": &"moving",
+"speed": 14.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nccl3"]
+radius = 4.0
+
+[node name="Pacman" type="Area2D"]
+collision_layer = 8
+collision_mask = 7
+script = ExtResource("1_l2wa1")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_tx7og")
+animation = &"death"
+frame = 12
+frame_progress = 1.0
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_nccl3")
+
+[node name="WallsDetectorRaycast" type="RayCast2D" parent="."]
+target_position = Vector2(-5, 0)
+collide_with_areas = true

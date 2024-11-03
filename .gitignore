@@ -1,7 +1,2 @@
-.import/
+# Godot 4+ specific ignores
 .godot/
-.tmp/
-export.cfg
-*.tres
-*.tscn
-*.godot

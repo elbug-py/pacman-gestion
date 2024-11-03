@@ -1,10 +1,10 @@
 extends Area2D
-
 var path = []
 var direction: Vector2 = Vector2.ZERO
-@export var speed: float = 34.0
-@export var initial_position: Vector2 = Vector2(13, 11) 
-# Get nodes
+@export var speed: float = 32.0
+@export var initial_position: Vector2 = Vector2(0, 0)
+
+# Custom targeting logic (e.g., offset to target position ahead of Pacman)
 @export_node_path("TileMap") var walls_path
 @onready var walls = get_node(walls_path) as TileMap
 @export_node_path("Area2D") var pacman_path
@@ -34,7 +34,12 @@ func _process(delta: float) -> void:
 		else:
 			path.remove_at(0)
 	else:
-		path = walls.get_path_to_player()
+		path = get_custom_path_to_player()
+
+func get_custom_path_to_player():
+	# Custom logic for Pinky's path
+	var target_position = pacman.position + Vector2(32, 0)  # Adjust offset as needed
+	return NavigationServer2D.map_get_path(get_world_2d().navigation_map, position, target_position, false)
 
 func _on_area_entered(area: Area2D) -> void:
 	if area == pacman:
