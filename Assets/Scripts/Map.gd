@@ -3,6 +3,8 @@ signal area_eat(tile_eat: bool)
 
 @export var initial_lives: int = 3
 @export var score: int = 0
+@export var pause_menu_scene: PackedScene
+var pause_menu_instance: Control
 var lives: int
 
 @export_node_path("Area2D") var player_path
@@ -23,6 +25,25 @@ func _ready():
 	lives = initial_lives
 	score = 0
 	update_labels()
+	pause_menu_scene = load("res://Assets/Scenes/UI/PauseMenu.tscn")
+
+func _unhandled_input(event):
+	# Check for the pause input (e.g., Escape key)
+	if event.is_action_pressed("ui_cancel"):  # "ui_cancel" is the default for Escape
+		toggle_pause()
+
+func toggle_pause():
+	if get_tree().paused:
+		get_tree().paused = false
+		if pause_menu_instance:
+			pause_menu_instance.queue_free()
+	else:
+		get_tree().paused = true
+		pause_menu_instance = pause_menu_scene.instantiate() as Control
+		add_child(pause_menu_instance)
+		pause_menu_instance.size = pause_menu_instance.get_minimum_size()
+		pause_menu_instance.position = (get_viewport().get_visible_rect().size - pause_menu_instance.size) / 2
+
 
 func reset_positions():
 	pacman.position = walls.get_initialize_position()
