@@ -2,18 +2,19 @@ extends Area2D
 
 var path = []
 var direction: Vector2 = Vector2.ZERO
-@export var speed: float = 34.0
-@export var initial_position: Vector2 = Vector2(11, 11)
+@export var speed: float = 32.0
+@export var initial_position: Vector2 = Vector2(16, 11)
 @export var scared: bool = false
 @export var escape_distance: float = 150.0
-@export var scared_duration: float = 10.0  # Duration of scared mode in seconds
+@export var scared_duration: float = 10.0
 
-# Get nodes
+@onready var animated_sprite = $AnimatedSprite2D
 @export_node_path("TileMap") var walls_path
 @onready var walls = get_node(walls_path) as TileMap
 @export_node_path("Area2D") var pacman_path
 @onready var pacman = get_node(pacman_path) as Area2D
-@onready var animated_sprite = $AnimatedSprite2D
+@export_node_path("Area2D") var blinky_path
+@onready var blinky = get_node(blinky_path) as Area2D
 @export var paused: bool = false
 var scared_timer: Timer
 
@@ -21,7 +22,7 @@ func _ready() -> void:
 	reset_position()
 	setup_scared_timer()
 	await get_tree().process_frame
-	set_deferred("path", walls.get_path_to_player())
+	set_deferred("path", calculate_path())
 
 func setup_scared_timer():
 	scared_timer = Timer.new()
@@ -29,7 +30,7 @@ func setup_scared_timer():
 	scared_timer.timeout.connect(_on_scared_timer_timeout)
 	add_child(scared_timer)
 
-func reset_position() -> void:
+func reset_position():
 	position = walls.map_to_local(initial_position)
 	path.clear()
 
@@ -44,11 +45,22 @@ func _process(delta: float) -> void:
 		var position_to_move = path[0]
 		direction = (position_to_move - position).normalized()
 		var distance = position.distance_to(path[0])
+		
 		if distance > 1:
 			position += speed * delta * direction
 			update_animation()
 		else:
 			path.remove_at(0)
+
+func calculate_target_position() -> Vector2:
+	# Get vector from Blinky to Pac-Man
+	var blinky_to_pacman = pacman.position - blinky.position
+	# Double the distance
+	var target = pacman.position + blinky_to_pacman
+	# Clamp to screen bounds
+	target.x = clamp(target.x, 0, get_viewport_rect().size.x)
+	target.y = clamp(target.y, 0, get_viewport_rect().size.y)
+	return target
 
 func update_path():
 	if scared:
@@ -65,7 +77,15 @@ func update_path():
 			false
 		)
 	else:
-		path = walls.get_path_to_player()
+		path = calculate_path()
+
+func calculate_path() -> Array:
+	return NavigationServer2D.map_get_path(
+		get_world_2d().navigation_map,
+		position,
+		calculate_target_position(),
+		false
+	)
 
 func update_animation():
 	if scared:
@@ -100,10 +120,10 @@ func activate_scared_mode():
 
 func deactivate_scared_mode():
 	scared = false
-	speed = speed / 0.75  # Reset speed to original
+	speed = speed / 0.75
 	update_animation()
 	path.clear()
 
 func _on_scared_timer_timeout():
-	if scared:  # Check if still scared (might have been eaten already)
+	if scared:
 		deactivate_scared_mode()

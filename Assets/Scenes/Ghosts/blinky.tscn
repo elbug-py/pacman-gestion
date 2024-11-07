@@ -1,21 +1,80 @@
-[gd_scene load_steps=4 format=3 uid="uid://c6oekmj8ceirx"]
+[gd_scene load_steps=11 format=3 uid="uid://c6oekmj8ceirx"]
 
 [ext_resource type="Texture2D" uid="uid://c3tv2wapbbawc" path="res://Assets/Sprites/Arcade - Pac-Man - General Sprites.png" id="1_1m0yp"]
 [ext_resource type="Script" path="res://Assets/Scripts/Ghosts/blinky.gd" id="1_d2mci"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_g1vq4"]
+atlas = ExtResource("1_1m0yp")
+region = Rect2(244, 32, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oeld1"]
+atlas = ExtResource("1_1m0yp")
+region = Rect2(252, 32, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yob7q"]
+atlas = ExtResource("1_1m0yp")
+region = Rect2(228, 32, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w0dmb"]
+atlas = ExtResource("1_1m0yp")
+region = Rect2(236, 32, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2grkw"]
+atlas = ExtResource("1_1m0yp")
+region = Rect2(292, 32, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y5pie"]
+atlas = ExtResource("1_1m0yp")
+region = Rect2(300, 32, 8, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2aa8f"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g1vq4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oeld1")
+}],
+"loop": true,
+"name": &"movingL",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yob7q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w0dmb")
+}],
+"loop": true,
+"name": &"movingR",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2grkw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y5pie")
+}],
+"loop": true,
+"name": &"scared",
+"speed": 5.0
+}]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1gtpv"]
-size = Vector2(12, 12)
+size = Vector2(10, 10)
 
 [node name="Blinky" type="Area2D"]
 collision_layer = 4
 collision_mask = 8
 script = ExtResource("1_d2mci")
 
-[node name="Sprite" type="Sprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(1.5, 1.5)
-texture = ExtResource("1_1m0yp")
-region_enabled = true
-region_rect = Rect2(252, 32, 8, 8)
+sprite_frames = SubResource("SpriteFrames_2aa8f")
+animation = &"scared"
 
 [node name="Shape" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_1gtpv")

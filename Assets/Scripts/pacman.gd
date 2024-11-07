@@ -61,4 +61,6 @@ func play_death_animation():
 	sprite_anim.play("death")  # Assuming "death" is the name of the death animation in AnimatedSprite2D
 	await sprite_anim.animation_finished
 	is_dying = false
-	walls.reset_positions()  # Reset Pac-Man and Blinky's positions
+	walls.reset_positions()
+	sprite_anim.play("moving")
+

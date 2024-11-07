@@ -1,0 +1,49 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4t0knar5cwyw"]
+
+[ext_resource type="Script" path="res://Assets/Scripts/UI/PauseMenu.gd" id="1_hljun"]
+
+[node name="PauseMenu" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hljun")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = -329.0
+offset_top = -315.0
+offset_right = 300.0
+offset_bottom = 399.0
+
+[node name="ResumeButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = -34.0
+offset_top = -14.0
+offset_right = 36.0
+offset_bottom = 17.0
+text = "Resume"
+
+[node name="RestartButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = -34.0
+offset_top = -68.0
+offset_right = 31.0
+offset_bottom = -37.0
+text = "Restart
+"
+
+[node name="QuitButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = -46.0
+offset_top = 36.0
+offset_right = 46.0
+offset_bottom = 67.0
+text = "Quit Game"
+
+[connection signal="pressed" from="ResumeButton" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="QuitButton" to="." method="_on_quit_button_pressed"]

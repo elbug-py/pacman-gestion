@@ -16,4 +16,5 @@ func _on_quit_button_pressed():
 func _on_restart_button_pressed():
 	print("Restart button pressed")
 	get_tree().paused = false
-	get_tree().reload_current_scene()
+	queue_free()
+	get_tree().change_scene_to_file("res://Assets/Scenes/MainMenu.tscn")

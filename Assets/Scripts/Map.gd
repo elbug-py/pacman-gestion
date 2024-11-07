@@ -13,6 +13,8 @@ var lives: int
 @onready var blinky = get_node(enemy_path) as Area2D
 @export_node_path("Area2D") var enemy2_path
 @onready var pinky = get_node(enemy2_path) as Area2D
+@export_node_path("Area2D") var enemy3_path
+@onready var inky = get_node(enemy3_path) as Area2D
 @export_node_path("TileMap") var walls_path
 @onready var walls = get_node(walls_path) as TileMap
 @export_node_path("Label") var lives_label_path
@@ -25,7 +27,6 @@ func _ready():
 	lives = initial_lives
 	score = 0
 	update_labels()
-	pause_menu_scene = load("res://Assets/Scenes/UI/PauseMenu.tscn")
 
 func _unhandled_input(event):
 	# Check for the pause input (e.g., Escape key)
@@ -108,6 +109,8 @@ func eat(position_pacman: Vector2):
 	elif tile in big_dot_tiles():
 		set_cell(0, current_tile, 0, Vector2i(12, 2))
 		score += 1000
+		pinky.activate_scared_mode()
+		blinky.activate_scared_mode()
 	update_labels()
 
 func _process(delta: float) -> void:
@@ -130,3 +133,19 @@ func get_path_to_player():
 func update_labels():
 	lives_label.text = "Lives: " + str(lives)
 	score_label.text = "Score: " + str(score)
+
+func get_custom_path_to_player():
+	# Custom logic for Pinky's path
+	var target_position = pacman.position + Vector2(32, 0)  # Adjust offset as needed
+	return NavigationServer2D.map_get_path(get_world_2d().navigation_map, pinky.position, target_position, false)
+
+
+func get_path_away_from_player():
+	# Calculate the direction away from Pac-Man
+	var ghost_position = blinky.position  # Adjust for other ghosts as needed
+	var pacman_position = pacman.position
+	var escape_position = ghost_position + (ghost_position - pacman_position).normalized() * 5
+	return NavigationServer2D.map_get_path(get_world_2d().navigation_map, ghost_position, escape_position, false)
+	
+
+

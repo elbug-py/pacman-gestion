@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Pacman"
 config/tags=PackedStringArray("estudos", "learn", "patreon", "test")
-run/main_scene="res://Assets/Scenes/Main.tscn"
+run/main_scene="res://Assets/Scenes/MainMenu.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.svg"
 
