@@ -50,6 +50,7 @@ func reset_positions():
 	pacman.position = walls.get_initialize_position()
 	blinky.reset_position()
 	pinky.reset_position()
+	inky.reset_position()
 
 func lose_life():
 	lives -= 1
@@ -58,6 +59,7 @@ func lose_life():
 	if lives > 0:
 		blinky.pause_movement()
 		pinky.pause_movement()
+		inky.pause_movement()
 		
 		await pacman.play_death_animation()
 		
@@ -65,6 +67,7 @@ func lose_life():
 		
 		blinky.resume_movement()
 		pinky.resume_movement()
+		inky.resume_movement()
 	else:
 		game_over()
 
@@ -111,8 +114,10 @@ func eat(position_pacman: Vector2):
 		score += 1000
 		pinky.activate_scared_mode()
 		blinky.activate_scared_mode()
+		inky.activate_scared_mode()
 	update_labels()
 
+@warning_ignore("unused_parameter")
 func _process(delta: float) -> void:
 	var count = 0
 	for i in range(get_used_rect().size.x):
@@ -128,6 +133,9 @@ func eat_tiles() -> Array:
 
 func get_path_to_player():
 	var path = NavigationServer2D.map_get_path(get_world_2d().navigation_map, blinky.position, pacman.position, false)
+	print("AAAAA: ",path)
+	print("BLINKY; ", blinky.position)
+	print("PACLMAN: ", pacman.position)
 	return path
 
 func update_labels():
@@ -139,13 +147,5 @@ func get_custom_path_to_player():
 	var target_position = pacman.position + Vector2(32, 0)  # Adjust offset as needed
 	return NavigationServer2D.map_get_path(get_world_2d().navigation_map, pinky.position, target_position, false)
 
-
-func get_path_away_from_player():
-	# Calculate the direction away from Pac-Man
-	var ghost_position = blinky.position  # Adjust for other ghosts as needed
-	var pacman_position = pacman.position
-	var escape_position = ghost_position + (ghost_position - pacman_position).normalized() * 5
-	return NavigationServer2D.map_get_path(get_world_2d().navigation_map, ghost_position, escape_position, false)
-	
 
 

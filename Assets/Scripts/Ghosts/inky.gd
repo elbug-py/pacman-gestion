@@ -38,7 +38,7 @@ func _process(delta: float) -> void:
 	if paused:
 		return
 		
-	if path.size() <= 1 or (scared and path.size() < 3):
+	if path.size() <= 1 or (scared and path.size() < 5):
 		update_path()
 		
 	if path.size() > 1:

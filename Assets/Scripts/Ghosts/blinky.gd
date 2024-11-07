@@ -3,7 +3,7 @@ extends Area2D
 var path = []
 var direction: Vector2 = Vector2.ZERO
 @export var speed: float = 34.0
-@export var initial_position: Vector2 = Vector2(11, 11)
+@export var initial_position: Vector2 = Vector2(18, 11)
 @export var scared: bool = false
 @export var escape_distance: float = 150.0
 @export var scared_duration: float = 10.0  # Duration of scared mode in seconds
@@ -20,6 +20,7 @@ var scared_timer: Timer
 func _ready() -> void:
 	reset_position()
 	setup_scared_timer()
+	scared = false
 	await get_tree().process_frame
 	set_deferred("path", walls.get_path_to_player())
 
@@ -36,8 +37,8 @@ func reset_position() -> void:
 func _process(delta: float) -> void:
 	if paused:
 		return
-		
-	if path.size() <= 1 or (scared and path.size() < 3):
+	
+	if path.size() <= 1 or (scared and path.size() < 5):
 		update_path()
 		
 	if path.size() > 1:
@@ -52,6 +53,7 @@ func _process(delta: float) -> void:
 
 func update_path():
 	if scared:
+		print(scared)
 		var away_vector = (position - pacman.position).normalized()
 		var escape_position = position + (away_vector * escape_distance)
 		
@@ -95,6 +97,7 @@ func activate_scared_mode():
 	scared = true
 	speed = speed * 0.75
 	update_animation()
+	print(path)
 	path.clear()
 	scared_timer.start(scared_duration)
 
